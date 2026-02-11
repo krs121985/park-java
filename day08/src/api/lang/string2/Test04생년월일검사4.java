@@ -1,0 +1,26 @@
+package api.lang.string2;
+
+public class Test04생년월일검사4 {
+	public static void main(String[] args) {
+//		날짜 검사를 하려면 범위를 검사할 수 있어야 한다
+//		- 월은 00부터 99까지가 아니라 01~12까지이다
+//		- 정규표현식은 오직 문자열을 대상으로 하기 때문에 범위가 아니라 "자리"별로 파악하여 처리
+//		- OR연산을 이용해서 "큰달", "작은달", "2월"로 구분하여 날짜수를 각각 31일, 30일, 28일로 처리
+//		- 프로그래밍으로 연도를 잘라낸 다음 숫자로 바꿔 윤년을 계산하여 2월의 날짜수만 조정(28 or 29일)
+//		String date = "2026-03-31";//true
+//		String date = "2026-03-32";//false
+//		String date = "2026-04-30";//true
+//		String date = "2026-04-31";//false
+//		String date = "2026-02-28";//true
+//		String date = "2026-02-29";//false
+		String date = "2024-02-29";//true
+		String regex = DateCalculator.createRegexp(date);
+		System.out.println(date.matches(regex));
+	}
+}
+
+
+
+
+
+

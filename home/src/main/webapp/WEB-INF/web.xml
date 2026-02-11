@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>home</display-name>
+	
+	<!-- 첫페이지 주소 목록(생략 가능한 주소들) -->
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.xhtml</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+		<welcome-file>default.xhtml</welcome-file>
+	</welcome-file-list>
+	
+	<!-- 세션 만료시간 -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>	
+	
+	<!-- 
+		필터 등록
+		- <filter> : 등록할 필터 클래스의 정보를 작성하는 영역
+			- <filter-name> : 필터에 부여할 별칭
+			- <filter-class> : 필터로 만들 클래스의 전체 경로 (생략 불가)
+		- <filter-mapping> : 적용시킬 주소의 패턴을 작성하는 영역 
+			- <filter-name> : 필터와 연결할 별칭
+			- <url-pattern> : 적용시킬 대상 주소
+				- 주소는 1개씩 여러 개 적을 수 있다 (ex : /member/login.jsp)
+				- 와일드카드(*)를 이용해서 범위 설정도 가능하지만 제한이 있다
+				- (중요) 와일드카드로 시작하거나 끝나는것만 가능 (ex : /member/* 또는 *.jsp)
+		- <filter>와 <filter-mapping>은 동일한 이름(filter-name)으로 연결할 수 있다
+		
+		(중요) 이 파일은 변경되면 서버 재시작이 반드시 필요!
+	-->
+	
+	<!-- 
+	<filter>
+		<filter-name>testFilter</filter-name>
+		<filter-class>home.filter.TestFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>testFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+ 	-->
+ 	
+ 	<!-- 비회원의 회원 전용페이지 접근을 차단하기 위한 필터 등록 -->
+ 	<filter>
+ 		<filter-name>memberFilter</filter-name>
+ 		<filter-class>home.filter.MemberFilter</filter-class>
+ 	</filter>
+ 	
+ 	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/member/mypage.jsp</url-pattern>
+ 	</filter-mapping>
+ 	
+ 	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/member/password.jsp</url-pattern>
+ 	</filter-mapping>
+ 	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/member/passwordProc.jsp</url-pattern>
+ 	</filter-mapping>
+ 	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/member/passwordResult.jsp</url-pattern>
+ 	</filter-mapping>
+ 	
+	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/member/change.jsp</url-pattern>
+ 	</filter-mapping>
+ 	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/member/changeProc.jsp</url-pattern>
+ 	</filter-mapping>
+ 	
+ 	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/member/exit.jsp</url-pattern>
+ 	</filter-mapping>
+ 	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/member/exitProc.jsp</url-pattern>
+ 	</filter-mapping>
+ 	
+ 	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/book/*</url-pattern>
+ 	</filter-mapping>
+ 	
+ 	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/board/write.jsp</url-pattern>
+ 	</filter-mapping>
+ 	<filter-mapping>
+ 		<filter-name>memberFilter</filter-name>
+ 		<url-pattern>/views/board/write.do</url-pattern>
+ 	</filter-mapping>
+ 	
+ 	
+ 	<!-- 
+ 		오류 페이지 설정 
+ 		- 오류의 종류에 따라 여러 가지의 상태 코드를 가질 수 있다
+ 		- 이것들을 이해하기 위해서는 HTTP 상태코드를 알아야 한다
+ 		- 1xx : 연결이 계속 되어있는 경우 (진행중)
+ 		- 2xx : 연결이 성공한 경우
+ 			- 200 : 일반적인 성공
+ 			- 206 : 동영상같은 대용량 데이터를 잘라서 보내는 경우
+ 		- 3xx : 연결이 리다이렉트 된 경우 
+ 		- 4xx : 무언가 부족해서 연결할 수 없는 경우
+ 			- 400 : 파라미터 불일치
+ 			- 401 : 미인증 (ex : 비회원이 회원기능에 접근)
+ 			- 403 : 권한부족 (ex : 회원이 관리자기능에 접근)
+ 			- 404 : 대상 없음 (ex : 커피숍에서 자장면 주문)
+ 			- 405 : 전송방식 불일치 (ex : 전화하라고 했는데 문자보낸 경우) 
+ 		- 5xx : 서버 처리 과정에서 오류가 발생한 경우
+ 			- 500 : 처리 과정에서 예외가 발생한 경우
+ 	-->
+ 	<error-page>
+ 		<error-code>400</error-code>
+ 		<location>/views/error/400.jsp</location>
+ 	</error-page>
+ 	<error-page>
+ 		<error-code>401</error-code>
+ 		<location>/views/error/401.jsp</location>
+ 	</error-page>
+ 	<error-page>
+ 		<error-code>403</error-code>
+ 		<location>/views/error/403.jsp</location>
+ 	</error-page>
+ 	<error-page>
+ 		<error-code>404</error-code>
+ 		<location>/views/error/404.jsp</location>
+ 	</error-page>
+ 	
+ 	<error-page>
+ 		<error-code>500</error-code>
+ 		<location>/views/error/500.jsp</location>
+ 	</error-page>
+ 	
+ 	<!-- 
+ 		서블릿(servlet) 등록
+ 		- 필터와 동일한 방법으로 등록
+ 		- 필터는 이미 있는 주소에 적용시키는거지만 서블릿은 기존에 없던 주소를 만드는 것이므로 중복은 불가
+ 		- web.xml에 작성하는 대신 서블릿 클래스 상단에 @WebServlet이라고 약식 등록이 가능
+	-->
+	<!-- 
+	<servlet>
+		<servlet-name>pokemonDeleteServlet</servlet-name>
+		<servlet-class>home.servlet.pokemon.PokemonDeleteServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>pokemonDeleteServlet</servlet-name>
+		<url-pattern>/views/pokemon/delete.do</url-pattern>
+	</servlet-mapping>
+	 -->
+ 	
+</web-app>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

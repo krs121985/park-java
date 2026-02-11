@@ -1,0 +1,33 @@
+package array;
+
+import java.util.Random;
+
+public class Test03배열생성방법2 {
+	public static void main(String[] args) {
+		//(Q) 만약 배열에 랜덤한 정수 5개를 넣는다면? (ex : 주사위)
+		Random r = new Random();
+		
+		//만들면서 데이터를 넣으려고 하니 구문이 조잡해진다
+		//→ 만들고 나서 넣으면 되지 않을까? (생성과 초기화를 분리)
+		
+		int[] data = new int[5];//다섯 칸 만들거야! (데이터는 몰라)
+		
+		//data = r.nextInt(6) + 1;//말도 안되는 코드 (리모컨에 숫자를...?)
+		data[0] = r.nextInt(6) + 1;//+0 위치에 데이터 넣기
+		data[1] = r.nextInt(6) + 1;//+1 위치에 데이터 넣기
+		data[2] = r.nextInt(6) + 1;//+2 위치에 데이터 넣기
+		data[3] = r.nextInt(6) + 1;//+3 위치에 데이터 넣기
+		data[4] = r.nextInt(6) + 1;//+4 위치에 데이터 넣기
+		
+		for(int i=0 ; i < data.length; i++) {
+			System.out.println(data[i]);
+		}
+	}
+}
+
+
+
+
+
+
+
